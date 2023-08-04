@@ -24,6 +24,6 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('testtest')
         ]);
 
-        Sound::factory(1000)->create();
+        Sound::factory(200)->create();
     }
 }

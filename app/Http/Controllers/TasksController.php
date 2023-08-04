@@ -57,7 +57,6 @@ class TasksController extends Controller
     {
         if ($task->user_id !== Auth::user()->id) {
             return $this->error(
-                '',
                 'You do not have permission to update this task.',
                 403
             );

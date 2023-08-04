@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\LoginUserRequest;
-use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\SignupRequest;
 use App\Models\User;
 use App\Traits\HttpResponses;
 use Illuminate\Support\Facades\Auth;
@@ -13,12 +13,12 @@ class AuthController extends Controller
 {
     use HttpResponses;
 
-    public function login(LoginUserRequest $request)
+    public function login(LoginRequest $request)
     {
         $request->validated($request->all());
 
         if (!Auth::attempt($request->only(['email', 'password']))) {
-            return $this->error('', 'Invalid credentials', 401);
+            return $this->error('Invalid credentials', 401);
         }
 
         $user = User::where('email', $request->email)->first();
@@ -29,14 +29,14 @@ class AuthController extends Controller
         ]);
     }
 
-    public function register(StoreUserRequest $request)
+    public function signup(SignupRequest $request)
     {
-        $request->validated($request->all());
+        $data = $request->validated();
 
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
         ]);
 
         return $this->success([
