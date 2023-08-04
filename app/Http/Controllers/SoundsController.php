@@ -6,7 +6,6 @@ use App\Http\Resources\SoundsResource;
 use App\Models\Sound;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class SoundsController extends Controller
 {
@@ -17,8 +16,11 @@ class SoundsController extends Controller
      */
     public function index()
     {
+        // Sound::where('user_id', Auth::user()->id)->get()
         return SoundsResource::collection(
-            Sound::where('user_id', Auth::user()->id)->get()
+            Sound::where('is_public', true)
+                ->orderBy('id', 'DESC')
+                ->paginate()
         );
     }
 
@@ -35,9 +37,14 @@ class SoundsController extends Controller
      */
     public function show(Sound $sound)
     {
-        return $this->isNotAuthorized($sound->user_id, function () use ($sound) {
-            return new SoundsResource($sound);
-        });
+        if (!$sound->isPublic) {
+            return $this->error(
+                'Sound not found',
+                404
+            );
+        }
+
+        return new SoundsResource($sound);
     }
 
     /**

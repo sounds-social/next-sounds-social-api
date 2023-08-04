@@ -15,13 +15,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/signup', [AuthController::class, 'signup']);
+Route::apiResource('/sounds', SoundsController::class);
 
 // Protected routes
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
-
-    Route::apiResource('/sounds', SoundsController::class);
 
     // Route::resource('/tasks', TasksController::class)
     Route::post('/upload', [UploadController::class, 'upload'])->name('upload.post');

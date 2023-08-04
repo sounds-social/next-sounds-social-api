@@ -19,12 +19,12 @@ class SoundFactory extends Factory
     {
         return [
             'user_id' => User::all()->random()->id,
-            'title' => $this->faker->unique()->sentence(),
+            'title' => $this->faker->unique()->sentence(4),
             'description' => $this->faker->text(),
             'is_public' => $this->faker->randomElement(
                 [true, false]
             ),
-            'sound_file_path' => '/example/path/to/sound/file.mp3'
+            'sound_file_path' => '/storage/test.mp3'
         ];
     }
 }
