@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreSoundRequest;
 use App\Http\Resources\SoundsResource;
 use App\Models\Sound;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SoundsController extends Controller
 {
@@ -27,9 +29,20 @@ class SoundsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreSoundRequest $request)
     {
-        //
+        $request->validated($request->all());
+
+        var_dump([Auth::user()]);
+        $sound = Sound::create([
+            'user_id' => Auth::user()->id,
+            'title' => $request->title,
+            'description' => $request->description,
+            'is_public' => $request->is_public,
+            'sound_file_path' => '/storage/test.mp3'
+        ]);
+
+        return new SoundsResource($sound);
     }
 
     /**
