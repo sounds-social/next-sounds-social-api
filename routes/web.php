@@ -16,3 +16,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/file/{any}', function (string $any) {
+    $path = public_path($any);
+
+    header('Access-Control-Allow-Origin: *');
+
+    return response()->file($path);
+})->where('any', '.*');
