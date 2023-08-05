@@ -40,7 +40,7 @@ class SoundsController extends Controller
             'slug' => Str::slug($request->title),
             'description' => $request->description,
             'is_public' => $request->is_public,
-            'sound_file_path' => '/storage/test.mp3'
+            'sound_file_path' => '/file/audio/test.mp3'
         ]);
 
         return new SoundsResource($sound);
