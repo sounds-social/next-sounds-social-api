@@ -25,6 +25,7 @@ class StoreSoundRequest extends FormRequest
             'title' => ['required', 'max:255'],
             'description' => ['required'],
             'is_public' => ['required'],
+            'file' => ['required', 'mimes:mp3,wav']
         ];
     }
 }

@@ -34,13 +34,27 @@ class SoundsController extends Controller
     {
         $request->validated($request->all());
 
+        $file = $request->file('file');
+
+        $targetPath = public_path() . '/storage/audio/';
+        $fileName = Str::uuid();
+
+        $moveSuccesful = $file->move(
+            $targetPath, 
+            $fileName
+        );
+
+        if (!$moveSuccesful) {
+            return $this->error('File uploaded failed.', 500);
+        }
+
         $sound = Sound::create([
             'user_id' => Auth::user()->id,
             'title' => $request->title,
             'slug' => Str::slug($request->title),
             'description' => $request->description,
             'is_public' => $request->is_public,
-            'sound_file_path' => '/file/audio/test.mp3'
+            'sound_file_path' => '/file/audio/' . $fileName
         ]);
 
         return new SoundsResource($sound);
