@@ -13,6 +13,7 @@ class Sound extends Model
     protected $fillable = [
         'user_id',
         'title',
+        'slug',
         'description',
         'is_public',
         'sound_file_path'

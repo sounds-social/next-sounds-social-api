@@ -21,6 +21,7 @@ class SoundsResource extends JsonResource
             'is_public' => (boolean) $this->is_public,
             'sound_file_path' => $this->sound_file_path,
             'title' => $this->title,
+            'slug' => $this->slug,
             'description' => $this->description,
             'user' => User::find($this->user_id)
         ];

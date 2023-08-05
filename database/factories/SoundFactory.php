@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Sound>
@@ -17,14 +18,17 @@ class SoundFactory extends Factory
      */
     public function definition(): array
     {
+        $title = $this->faker->unique()->sentence(2);
+
         return [
             'user_id' => User::all()->random()->id,
-            'title' => $this->faker->unique()->sentence(4),
+            'title' => $title,
+            'slug' => Str::slug($title),
             'description' => $this->faker->text(),
             'is_public' => $this->faker->randomElement(
                 [true, false]
             ),
-            'sound_file_path' => '/storage/test.mp3'
+            'sound_file_path' => '/storage/audio/test.mp3'
         ];
     }
 }

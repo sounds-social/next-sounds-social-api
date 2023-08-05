@@ -8,6 +8,7 @@ use App\Models\Sound;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class SoundsController extends Controller
 {
@@ -33,10 +34,10 @@ class SoundsController extends Controller
     {
         $request->validated($request->all());
 
-        var_dump([Auth::user()]);
         $sound = Sound::create([
             'user_id' => Auth::user()->id,
             'title' => $request->title,
+            'slug' => Str::slug($request->title),
             'description' => $request->description,
             'is_public' => $request->is_public,
             'sound_file_path' => '/storage/test.mp3'
@@ -48,9 +49,11 @@ class SoundsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Sound $sound)
+    public function show(string $slug)
     {
-        if (!$sound->isPublic) {
+        $sound = Sound::where('slug', $slug)->first();
+
+        if (!$sound->is_public) {
             return $this->error(
                 'Sound not found',
                 404

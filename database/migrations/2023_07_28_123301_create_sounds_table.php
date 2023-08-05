@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->string('title');
+            $table->string('slug')->unique();
             $table->string('description');
             $table->string('sound_file_path');
             $table->boolean('is_public')->default(false);
