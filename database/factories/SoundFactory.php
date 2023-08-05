@@ -28,7 +28,7 @@ class SoundFactory extends Factory
             'is_public' => $this->faker->randomElement(
                 [true, false]
             ),
-            'sound_file_path' => '/storage/audio/test.mp3'
+            'sound_file_path' => '/file/audio/test.mp3'
         ];
     }
 }

@@ -17,10 +17,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/file/{any}', function (string $any) {
-    $path = public_path($any);
+Route::get('/file/{folder}/{file}', function (string $folder, string $file) {
+    $path = public_path() . '/storage/' . $folder . '/' . $file;
 
     header('Access-Control-Allow-Origin: *');
 
     return response()->file($path);
-})->where('any', '.*');
+});
