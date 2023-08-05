@@ -53,7 +53,7 @@ class SoundsController extends Controller
     {
         $sound = Sound::where('slug', $slug)->first();
 
-        if (!$sound->is_public) {
+        if (!$sound->is_public && Auth::user()->id !== $sound->user_id) {
             return $this->error(
                 'Sound not found',
                 404
