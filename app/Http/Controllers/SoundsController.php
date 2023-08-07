@@ -32,6 +32,7 @@ class SoundsController extends Controller
      */
     public function store(StoreSoundRequest $request)
     {
+
         $request->validated($request->all());
 
         $file = $request->file('file');
@@ -53,7 +54,7 @@ class SoundsController extends Controller
             'title' => $request->title,
             'slug' => Str::slug($request->title),
             'description' => $request->description,
-            'is_public' => $request->is_public,
+            'is_public' => 'true' === $request->is_public,
             'sound_file_path' => '/file/audio/' . $fileName
         ]);
 
