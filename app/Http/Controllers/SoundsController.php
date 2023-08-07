@@ -34,7 +34,7 @@ class SoundsController extends Controller
         }
 
         return SoundsResource::collection(
-            $sounds->paginate()
+            $sounds->paginate(10)
         );
     }
 

@@ -4,8 +4,10 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -42,4 +44,51 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function follows(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'follows', 'user_id', 'follow_id');
+    }
+    
+    public function followers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'follows', 'follow_id', 'user_id');
+    }
+
+    public static function follow ($userId, $followId) {
+        return Follow::create([
+            'user_id' => $userId,
+            'follow_id' => $followId,
+        ]);
+    }
+
+    public static function unfollow ($userId, $followId) {
+        return Follow::where([
+            'user_id' => $userId,
+            'follow_id' => $followId,
+        ])->delete();
+    }
+
+    public function isFollowing () {
+        $user = Auth::user();
+
+        if (!$user) {
+            return false;
+        }
+
+        return Follow::where([
+            'user_id' => $user->id,
+            'follow_id' => $this->id,
+        ])->exists();
+    }
+
+    public function canFollow () {
+        $user = Auth::user();
+
+        if (!$user) {
+            return false;
+        }
+
+        return $this->id !== $user->id;
+    }
 }
