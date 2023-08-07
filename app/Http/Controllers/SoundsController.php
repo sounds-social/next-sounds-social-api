@@ -17,13 +17,24 @@ class SoundsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Sound::where('user_id', Auth::user()->id)->get()
+        $userId = $request->user_id;
+
+        $currentUser = Auth::user();
+
+        $sounds = Sound::orderBy('id', 'DESC');
+
+        if (!$currentUser || $currentUser->id != $userId) {
+            $sounds->where('is_public', true);
+        }
+
+        if ($userId) {
+            $sounds->where('user_id', $userId);
+        }
+
         return SoundsResource::collection(
-            Sound::where('is_public', true)
-                ->orderBy('id', 'DESC')
-                ->paginate()
+            $sounds->paginate()
         );
     }
 

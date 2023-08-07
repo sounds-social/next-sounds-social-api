@@ -2,13 +2,14 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SoundsController;
-use App\Http\Controllers\TasksController;
 use App\Http\Controllers\UploadController;
+use App\Http\Controllers\UsersController;
+use App\Http\Resources\UsersResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    return new UsersResource($request->user());
 });
 
 // Public routes
@@ -19,9 +20,9 @@ Route::post('/signup', [AuthController::class, 'signup']);
 // Protected routes
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::post('/logout', [AuthController::class, 'logout']);
-
     Route::apiResource('/sounds', SoundsController::class);
-    // Route::resource('/tasks', TasksController::class)
+
+    Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/upload', [UploadController::class, 'upload'])->name('upload.post');
+    Route::get('/users/{slug}', [UsersController::class, 'show']);
 });
