@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreSoundRequest;
 use App\Http\Resources\SoundsResource;
 use App\Models\Sound;
+use App\Traits\FileUploadHelper;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,6 +14,7 @@ use Illuminate\Support\Str;
 class SoundsController extends Controller
 {
     use HttpResponses;
+    use FileUploadHelper;
 
     /**
      * Display a listing of the resource.
@@ -48,13 +50,7 @@ class SoundsController extends Controller
 
         $file = $request->file('file');
 
-        $targetPath = public_path() . '/storage/audio/';
-        $fileName = Str::uuid();
-
-        $moveSuccesful = $file->move(
-            $targetPath, 
-            $fileName
-        );
+        list($filePath, $moveSuccesful) = $this->moveFile($file, 'audio');
 
         if (!$moveSuccesful) {
             return $this->error('File uploaded failed.', 500);
@@ -66,7 +62,7 @@ class SoundsController extends Controller
             'slug' => Str::slug($request->title),
             'description' => $request->description,
             'is_public' => 'true' === $request->is_public,
-            'sound_file_path' => '/file/audio/' . $fileName
+            'sound_file_path' => $filePath
         ]);
 
         return new SoundsResource($sound);

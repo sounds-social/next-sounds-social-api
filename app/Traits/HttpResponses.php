@@ -2,7 +2,6 @@
 
 namespace App\Traits;
 
-use App\Models\Task;
 use Illuminate\Support\Facades\Auth;
 
 trait HttpResponses
