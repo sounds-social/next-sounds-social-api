@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Traits\HttpResponses;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -33,9 +34,12 @@ class AuthController extends Controller
     {
         $data = $request->validated();
 
+        $name = $data['name'];
+
         $user = User::create([
-            'name' => $data['name'],
+            'name' => $name,
             'email' => $data['email'],
+            'slug' => Str::slug($name),
             'password' => Hash::make($data['password']),
         ]);
 
