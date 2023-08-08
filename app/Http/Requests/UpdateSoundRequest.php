@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreSoundRequest extends FormRequest
+class UpdateSoundRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,6 @@ class StoreSoundRequest extends FormRequest
             'title' => ['required', 'max:255'],
             'description' => ['required'],
             'is_public' => ['required'],
-            'file' => ['required', 'mimes:mp3,wav'],
             'cover_file' => ['sometimes', 'mimes:png,jpg,jpeg,gif']
         ];
     }

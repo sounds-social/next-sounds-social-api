@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreSoundRequest;
+use App\Http\Requests\UpdateSoundRequest;
 use App\Http\Resources\SoundsResource;
 use App\Models\Sound;
 use App\Traits\FileUploadHelper;
@@ -45,7 +46,6 @@ class SoundsController extends Controller
      */
     public function store(StoreSoundRequest $request)
     {
-
         $request->validated($request->all());
 
         $file = $request->file('file');
@@ -103,9 +103,42 @@ class SoundsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateSoundRequest $request, string $slug)
     {
-        //
+        $request->validated($request->all());
+
+        $sound = Sound::where('slug', '=', $slug)->firstOrFail();
+
+        if (!$sound) {
+            return $this->error(
+                'Sound not found',
+                404
+            );
+        }
+
+        $coverFile = $request->file('cover_file');
+        $coverFilePath = null;
+
+        if ($coverFile) {
+            list($coverFilePath, $moveSuccesful) = $this->moveFile(
+                $coverFile,
+                'covers'
+            );
+
+            if (!$moveSuccesful) {
+                return $this->error('Cover file uploaded failed.', 500);
+            }
+
+            $sound->cover_file_path = $coverFilePath;
+        }
+
+        $sound->title = $request->title;
+        $sound->description = $request->description;
+        $sound->is_public = 'true' === $request->is_public;
+
+        $sound->save();
+
+        return new SoundsResource($sound);
     }
 
     /**
