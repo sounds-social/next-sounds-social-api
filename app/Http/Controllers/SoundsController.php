@@ -37,7 +37,7 @@ class SoundsController extends Controller
         }
 
         return SoundsResource::collection(
-            $sounds->paginate(10)
+            $sounds->with('user')->paginate(10)
         );
     }
 
@@ -88,7 +88,10 @@ class SoundsController extends Controller
      */
     public function show(string $slug)
     {
-        $sound = Sound::where('slug', $slug)->first();
+        $sound = Sound::where('slug', $slug)
+            ->withCount(['likes'])
+            ->with('user')
+            ->first();
 
         if (!$sound->is_public && Auth::user()->id !== $sound->user_id) {
             return $this->error(

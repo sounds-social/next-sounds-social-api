@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FollowsController;
+use App\Http\Controllers\LikesController;
 use App\Http\Controllers\SoundsController;
 use App\Http\Controllers\UploadController;
 use App\Http\Controllers\UsersController;
@@ -28,6 +29,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::apiResource('/sounds', SoundsController::class);
     Route::apiResource('/follows', FollowsController::class);
+    Route::apiResource('/likes', LikesController::class);
 
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/upload', [UploadController::class, 'upload'])->name('upload.post');

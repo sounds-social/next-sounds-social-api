@@ -15,7 +15,7 @@ class SoundsResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
+        $data = [
             'id' => $this->id,
             'created_at' => $this->created_at,
             'is_public' => (boolean) $this->is_public,
@@ -24,9 +24,14 @@ class SoundsResource extends JsonResource
             'title' => $this->title,
             'slug' => $this->slug,
             'description' => $this->description,
-            'user' => User::find($this->user_id)
+            'user' => User::find($this->user_id),
+            'has_liked' => $this->hasLiked(),
         ];
-        
-        return parent::toArray($request);
+ 
+        if (isset($this->likes_count)) {
+            $data['likes_count'] = $this->likes_count;
+        }
+
+        return $data;
     }
 }
