@@ -16,7 +16,8 @@ class Sound extends Model
         'slug',
         'description',
         'is_public',
-        'sound_file_path'
+        'sound_file_path',
+        'cover_file_path'
     ];
 
     public function user(): BelongsTo {

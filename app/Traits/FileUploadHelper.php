@@ -16,10 +16,6 @@ trait FileUploadHelper
       $fileName
     );
 
-    if (!$moveSuccesful) {
-      return $this->error('File uploaded failed.', 500);
-    }
-
-    return ['/file/audio/' . $fileName, $moveSuccesful];
+    return ['/file/' . $folder . '/' . $fileName, $moveSuccesful];
   }
 }

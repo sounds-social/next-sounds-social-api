@@ -53,7 +53,21 @@ class SoundsController extends Controller
         list($filePath, $moveSuccesful) = $this->moveFile($file, 'audio');
 
         if (!$moveSuccesful) {
-            return $this->error('File uploaded failed.', 500);
+            return $this->error('Sound file uploaded failed.', 500);
+        }
+
+        $coverFile = $request->file('cover_file');
+        $coverFilePath = null;
+
+        if ($coverFile) {
+            list($coverFilePath, $moveSuccesful) = $this->moveFile(
+                $coverFile,
+                'covers'
+            );
+
+            if (!$moveSuccesful) {
+                return $this->error('Cover file uploaded failed.', 500);
+            }
         }
 
         $sound = Sound::create([
@@ -62,7 +76,8 @@ class SoundsController extends Controller
             'slug' => Str::slug($request->title),
             'description' => $request->description,
             'is_public' => 'true' === $request->is_public,
-            'sound_file_path' => $filePath
+            'sound_file_path' => $filePath,
+            'cover_file_path' => $coverFilePath
         ]);
 
         return new SoundsResource($sound);

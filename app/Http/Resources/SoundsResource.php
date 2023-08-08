@@ -20,6 +20,7 @@ class SoundsResource extends JsonResource
             'created_at' => $this->created_at,
             'is_public' => (boolean) $this->is_public,
             'sound_file_path' => $this->sound_file_path,
+            'cover_file_path' => $this->cover_file_path,
             'title' => $this->title,
             'slug' => $this->slug,
             'description' => $this->description,

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->string('description');
             $table->string('sound_file_path');
+            $table->string('cover_file_path')->nullable();
             $table->boolean('is_public')->default(false);
             $table->foreign('user_id')
                 ->references('id')
