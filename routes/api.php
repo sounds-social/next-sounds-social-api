@@ -22,13 +22,13 @@ Route::post('/signup', [AuthController::class, 'signup']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     // Workaround as described here: https://stackoverflow.com/questions/65008650/how-to-use-put-method-in-laravel-api-with-file-upload
-
     Route::post('/sounds/{slug}', [SoundsController::class, 'update']);
+    Route::post('/users/{slug}', [UsersController::class, 'update']);
+    Route::get('/users/{slug}', [UsersController::class, 'show']);
 
     Route::apiResource('/sounds', SoundsController::class);
     Route::apiResource('/follows', FollowsController::class);
 
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/upload', [UploadController::class, 'upload'])->name('upload.post');
-    Route::get('/users/{slug}', [UsersController::class, 'show']);
 });

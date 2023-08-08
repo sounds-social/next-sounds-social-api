@@ -20,6 +20,7 @@ class UsersResource extends JsonResource
             'email' => $this->email,
             'slug' => $this->slug,
             'created_at' => $this->created_at,
+            'avatar_file_path' => $this->avatar_file_path,
             'followers_count' => $this->followers_count,
             'follows_count' => $this->follows_count,
             'is_following' => $this->isFollowing(),
