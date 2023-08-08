@@ -37,7 +37,7 @@ class SoundsController extends Controller
         }
 
         return SoundsResource::collection(
-            $sounds->with('user')->paginate(10)
+            $sounds->with('user')->paginate(7)
         );
     }
 
