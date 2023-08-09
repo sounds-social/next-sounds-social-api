@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\CommentsResource;
 
 class SoundsResource extends JsonResource
 {
@@ -30,6 +31,12 @@ class SoundsResource extends JsonResource
  
         if (isset($this->likes_count)) {
             $data['likes_count'] = $this->likes_count;
+        }
+
+        if (isset($this->comments)) {
+            $data['comments'] = CommentsResource::collection(
+                $this->comments
+            );
         }
 
         return $data;

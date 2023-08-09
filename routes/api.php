@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\FollowsController;
 use App\Http\Controllers\LikesController;
 use App\Http\Controllers\SoundsController;
@@ -29,6 +30,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::apiResource('/sounds', SoundsController::class);
     Route::apiResource('/follows', FollowsController::class);
+    Route::apiResource('/comments', CommentsController::class);
     Route::apiResource('/likes', LikesController::class);
 
     Route::post('/logout', [AuthController::class, 'logout']);

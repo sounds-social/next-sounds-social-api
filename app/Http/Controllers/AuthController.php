@@ -35,6 +35,7 @@ class AuthController extends Controller
         $data = $request->validated();
 
         $name = $data['name'];
+        
         $slug = Str::slug($name);
         $userWithSlug = User::where('slug', $slug)->first();
 

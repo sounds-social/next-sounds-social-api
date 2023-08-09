@@ -97,7 +97,7 @@ class SoundsController extends Controller
     {
         $sound = Sound::where('slug', $slug)
             ->withCount(['likes'])
-            ->with('user')
+            ->with(['user', 'comments'])
             ->first();
 
         if (!$sound->is_public && Auth::user()->id !== $sound->user_id) {
