@@ -36,6 +36,14 @@ class SoundsController extends Controller
             $sounds->where('user_id', $userId);
         }
 
+        if ($request->following && $currentUser) {
+            $followIds = $currentUser->follows()
+                ->pluck('users.id')
+                ->toArray();
+
+            $sounds->whereIn('user_id', $followIds);
+        }
+
         return SoundsResource::collection(
             $sounds->with('user')->paginate(7)
         );

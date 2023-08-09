@@ -33,12 +33,6 @@ class SoundsResource extends JsonResource
             $data['likes_count'] = $this->likes_count;
         }
 
-        if (isset($this->comments)) {
-            $data['comments'] = CommentsResource::collection(
-                $this->comments
-            );
-        }
-
         return $data;
     }
 }

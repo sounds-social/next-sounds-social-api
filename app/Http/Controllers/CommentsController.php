@@ -15,12 +15,17 @@ class CommentsController extends Controller
      */
     public function index(Request $request)
     {
+        $comments = Comment::with(['user', 'sound'])
+            ->orderBy('id', 'desc');
+
+        if ($request->sound_id) {
+            $comments->where('sound_id', $request->sound_id);
+        }
+
         // TODO: for sound_id
-        /* return CommentsResource::collection(
-            Comment::with(['user', 'sound'])
-                ->orderBy('id', 'desc')
-                ->paginate(10)
-        ); */
+        return CommentsResource::collection(
+            $comments->paginate(10)
+        );
     }
 
     /**
