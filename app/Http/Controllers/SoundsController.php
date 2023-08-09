@@ -44,9 +44,23 @@ class SoundsController extends Controller
             $sounds->whereIn('user_id', $followIds);
         }
 
-        return SoundsResource::collection(
-            $sounds->with('user')->paginate(7)
-        );
+        $sounds = $sounds->with('user');
+
+        if ($request->limit || $request->offset) {
+            $sounds
+                ->skip($request->offset)
+                ->take($request->limit);
+        } else {
+            $sounds->limit(15);
+        }
+
+        if ($request->count) {
+            return $this->success([
+                'count' => $sounds->count()
+            ], 'Sounds count retrieved successfully');
+        }
+
+        return SoundsResource::collection($sounds->get());
     }
 
     /**
