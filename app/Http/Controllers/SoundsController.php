@@ -70,10 +70,17 @@ class SoundsController extends Controller
             }
         }
 
+        $slug = Str::slug($request->title);
+        $soundWithSlug = Sound::where('slug', $slug)->first();
+
+        if ($soundWithSlug) {
+            $slug = $slug . '-' . time();
+        }
+
         $sound = Sound::create([
             'user_id' => Auth::user()->id,
             'title' => $request->title,
-            'slug' => Str::slug($request->title),
+            'slug' => $slug,
             'description' => $request->description,
             'is_public' => 'true' === $request->is_public,
             'sound_file_path' => $filePath,

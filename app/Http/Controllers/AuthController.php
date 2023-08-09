@@ -35,11 +35,17 @@ class AuthController extends Controller
         $data = $request->validated();
 
         $name = $data['name'];
+        $slug = Str::slug($name);
+        $userWithSlug = User::where('slug', $slug)->first();
+
+        if ($userWithSlug) {
+            $slug = $slug . '-' . time();
+        }
 
         $user = User::create([
             'name' => $name,
             'email' => $data['email'],
-            'slug' => Str::slug($name),
+            'slug' => $slug,
             'password' => Hash::make($data['password']),
         ]);
 
