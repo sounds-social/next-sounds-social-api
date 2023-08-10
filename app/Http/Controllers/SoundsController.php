@@ -6,6 +6,7 @@ use App\Http\Requests\StoreSoundRequest;
 use App\Http\Requests\UpdateSoundRequest;
 use App\Http\Resources\SoundsResource;
 use App\Models\Sound;
+use App\Models\User;
 use App\Traits\FileUploadHelper;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
@@ -44,7 +45,19 @@ class SoundsController extends Controller
             $sounds->whereIn('user_id', $followIds);
         }
 
-        $sounds = $sounds->with('user');
+        $likedBy = $request->liked_by;
+
+        if ($likedBy) {
+            $user = User::where('id', $likedBy)->first();
+
+            $likes = $user->likes()
+                ->orderBy('likes.id', 'DESC')
+                ->pluck('likes.sound_id')->toArray();
+
+            $sounds->whereIn('id', $likes);
+        }
+
+        $sounds->with('user');
 
         if ($request->limit || $request->offset) {
             $sounds
