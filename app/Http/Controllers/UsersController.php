@@ -20,7 +20,7 @@ class UsersController extends Controller
     public function show(string $slug)
     {
         $user = User::where('slug', $slug)
-            ->withCount(['followers', 'follows'])
+            ->withCount(['followers', 'follows', 'likes'])
             ->first();
 
         return new UsersResource($user);

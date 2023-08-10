@@ -5,15 +5,35 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreLikeRequest;
 use App\Http\Requests\UpdateLikeRequest;
 use App\Models\Like;
+use App\Traits\HttpResponses;
+use Illuminate\Http\Request;
 
 class LikesController extends Controller
 {
+    use HttpResponses;
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $userId = $request->user_id;
+
+        if (!$userId) {
+            return $this->error('User ID is required.', 400);
+        }
+
+        $limit = $request->limit;
+
+        $likes = Like::where('user_id', $userId)
+            ->with(['sound', 'user'])
+            ->orderBy('id', 'desc');
+
+        if ($limit) {
+            $likes->take($limit);
+        }
+
+        return $likes->get();
     }
 
     /**

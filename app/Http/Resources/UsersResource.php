@@ -33,6 +33,10 @@ class UsersResource extends JsonResource
             $data['follows_count'] = $this->follows_count;
         }
 
+        if (isset($this->likes_count)) {
+            $data['likes_count'] = $this->likes_count;
+        }
+
         return $data;
     }
 }
