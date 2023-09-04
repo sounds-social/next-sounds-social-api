@@ -6,7 +6,10 @@ use App\Http\Requests\StoreCommentRequest;
 use App\Http\Requests\UpdateCommentRequest;
 use App\Http\Resources\CommentsResource;
 use App\Models\Comment;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class CommentsController extends Controller
 {
@@ -61,6 +64,14 @@ class CommentsController extends Controller
      */
     public function destroy(Comment $comment)
     {
-        //
+        $user = Auth::user();
+
+        if ($user->id === $comment->user()->first()->id) {
+            $comment->delete();
+
+            return new JsonResponse(null, 204);
+        }
+    
+        return new JsonResponse(['message' => 'Unauthorized'], 401);
     }
 }
